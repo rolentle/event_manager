@@ -34,6 +34,16 @@ def popular_hour(dates)
   return datehash.key(dirtyarray[-1])
 end
 
+def popular_day(dates)
+  datehash = {}
+  dates.each do |date|
+    datehash[clean_date(date).wday] ||= 0
+    datehash[clean_date(date).wday] += 1
+  end
+  dirtyarray = datehash.values.to_a
+  dirtyarray.sort!
+  return datehash.key(dirtyarray[-1])
+end
 
 def legislators_by_zipcode(zipcode)
   legislators = Sunlight::Congress::Legislator.by_zipcode(zipcode)
@@ -59,7 +69,10 @@ erb_template = ERB.new template_letter
 
 contents.each do |row|
   id = row[0]
+
   name = row[:first_name]
+
+  regdate = row[:regdate]
 
   zipcode = clean_zipcode(row[:zipcode])
 
