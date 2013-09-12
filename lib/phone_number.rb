@@ -1,9 +1,9 @@
 class PhoneNumber
-    def initialize(phone_number)
-      @phone_number = phone_number
-    end 
+  def initialize(phone_number)
+    @phone_number = phone_number
+  end
 
-    def clean_phone_number
+  def clean_phone_number
     clean_number = @phone_number.gsub(/\D/, "")
     if clean_number.length == 11 && clean_number[0] == "1"
       clean_number = clean_number[1..-1]
@@ -13,4 +13,5 @@ class PhoneNumber
       clean_number
     end
   end
+
 end

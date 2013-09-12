@@ -1,25 +1,32 @@
+require 'date'
+
 class Regdate
-  def popular_hour(dates)
+  def initialize(date)
+    @date = date
+  end
+
+  def most_popular_hour(date_array)
     datehash = {}
-    dates.each do |date|
+    date_array.each do |date|
       datehash[clean_date(date).hour] ||= 0
       datehash[clean_date(date).hour] += 1
     end
 
-    dirtyarray = datehash.values.to_a
-    dirtyarray.sort!
-    return datehash.key(dirtyarray[-1])
+    clean_array = datehash.values.to_a
+    clean_array.sort!
+    return datehash.key(clean_array[-1])
   end
 
-  def popular_day(dates)
+  def most_popular_day(date_array)
     datehash = {}
-    dates.each do |date|
+    date_array.each do |date|
       datehash[clean_date(date).wday] ||= 0
       datehash[clean_date(date).wday] += 1
     end
-    dirtyarray = datehash.values.to_a
-    dirtyarray.sort!
-    return datehash.key(dirtyarray[-1])
+
+    clean_array = datehash.values.to_a
+    clean_array.sort!
+    return datehash.key(clean_array[-1])
   end
 
   private
