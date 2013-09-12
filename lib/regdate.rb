@@ -1,37 +1,42 @@
 require 'date'
+require 'csv'
 
 class Regdate
-  def initialize(date)
-    @date = date
+  attr_accessor :date_array
+
+  def initialize(contents)
+    @date_array = []
+    contents.each do |row|
+      @date_array << clean_date(row[:regdate])
+    end  
   end
 
-  def most_popular_hour(date_array)
-    datehash = {}
-    date_array.each do |date|
-      datehash[clean_date(date).hour] ||= 0
-      datehash[clean_date(date).hour] += 1
-    end
-
-    clean_array = datehash.values.to_a
-    clean_array.sort!
-    return datehash.key(clean_array[-1])
+  def most_popular_hour
+    hours = @date_array.collect {|date| date.hour}
+    return_most_occured(hours)        
   end
 
-  def most_popular_day(date_array)
-    datehash = {}
-    date_array.each do |date|
-      datehash[clean_date(date).wday] ||= 0
-      datehash[clean_date(date).wday] += 1
-    end
-
-    clean_array = datehash.values.to_a
-    clean_array.sort!
-    return datehash.key(clean_array[-1])
+  def most_popular_wday
+    days = @date_array.collect {|date| date.wday}
+    return_most_occured(days)      
   end
-
-  private
 
   def clean_date(date)
     old_date = DateTime.strptime(date, "\%m\/\%e\/\%y\s\%H:\%M")
+  end
+
+  def frequencies(array)
+    hash = {}
+      array.each do |key|
+        hash[key] ||= 0
+        hash[key] += 1
+      end
+    return hash
+  end
+
+  def return_most_occured(array)
+    hash = frequencies(array)
+    clean_array = hash.values.to_a.sort!
+    return hash.key(clean_array[-1])
   end
 end
